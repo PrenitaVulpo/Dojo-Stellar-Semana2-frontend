@@ -56,18 +56,35 @@ fn menu_main() {
                 continue;
             }
         };
+        println!("{}", option.to_string().purple());
+
         match option {
             //integrar a função de conectar a carteira no lugar disso aí
-            1 => println!("One"),
-            2 => println!("Two"),
+            1 => {
+                println!("One");
+                menu_main()
+            }
+            // 2 => {
+            //     println!("One");
+            //     menu_main()
+            // }
+            2 => menu_post_wallet_load(),
             //integrar a função de ver se existe uma carteira conectada, basta imprimir se
-            //a carteira está conectada ou não e voltar aqui 
-            3 => println!("Three"),
+            //a carteira está conectada ou não e voltar aqui
+            3 => {
+                println!("Three");
+                menu_main()
+            }
             4 => {
                 println!("saindo");
                 break;
             }
-            _ => println!("{}", "erro, tente novamente".red()),
+            _ => {
+                println!("{}", option.to_string().purple());
+
+                println!("{}", "erro, tente novamente".red());
+                menu_main()
+            }
         }
     }
 }
@@ -78,10 +95,52 @@ fn menu_post_wallet_load() {
     loop {
         load_menu_header();
         println!("{}", "1 - Criar par de chaves".green());
-    println!("{}", "2 - Listar pares disponíveis".green());
-    println!("{}", "3 - Buscar Saldo da Carteira".green());
-    println!("{}", "4 - Enviar XML para outros Endereços".green());
-    println!("{}", "Para sair da aplicação, use CTRL + C".red());
+        println!("{}", "2 - Listar pares disponíveis".green());
+        println!("{}", "3 - Buscar Saldo da Carteira".green());
+        println!("{}", "4 - Enviar XML para outros Endereços".green());
+        println!("{}", "5 - Voltar ao menu anterior".yellow());
+        println!("{}", "Para sair da aplicação, use CTRL + C".red());
         load_menu_footer();
+
+        //input
+        println!("{}", "Digite a opção desejada (somente números):".yellow());
+        io::stdin()
+            .read_line(&mut option)
+            .expect("Failed to read line");
+
+        let option: u32 = match option.trim().parse() {
+            Ok(num) => num,
+            Err(_) => {
+                println!("{}", "Entrada inválida! Use somente números.".red());
+                continue;
+            }
+        };
+        match option {
+            //integrar a função de criar par de chaves
+            1 => {
+                println!("One");
+                menu_post_wallet_load()
+            }
+            //integrar a função de listar pares de chaves
+            2 => {
+                println!("Two");
+                menu_post_wallet_load()
+            }
+            //integrar a função de buscar saldo
+            3 => {
+                println!("Three");
+                menu_post_wallet_load()
+            }
+            //integrar a função de enviar XML
+            4 => {
+                println!("four");
+                menu_post_wallet_load()
+            }
+            5 => {
+                println!("saindo");
+                break;
+            }
+            _ => println!("{}", "erro, tente novamente".red()),
+        }
     }
-};
+}
